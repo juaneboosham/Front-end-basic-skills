@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>垂直居中</title>
+    <style>
+        .father {
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            /* flex-direction: column; */
+            /* align-items: center; */
+            background-color: #ccc;
+        }
+
+        .box {
+            width: 500px;
+            height: 100px;
+            background-color: aqua;
+            flex-shrink: 0;
+        }
+
+        .box:last-child {
+            width: 500px;
+            height: 100px;
+            background-color: rgb(25, 0, 255);
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="father">
+        <div class="box"> </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+body{
+    background: #613e3e;
+}
+
+
+h1 {
+    font-size: 80px;
+    color: #00ff68;
+    text-align: center;
+}
+
+
+
+.button-box {
+    width: 240px;
+    margin: 60px auto;
+}
+
+#button {
+    background: #ffd100;
+    border-radius: 12px;
+    width: 240px;
+    display: block;
+    height: 52px;
+    line-height: 47px;
+    font-size: 14px;
+    color: rgba(0,0,0,.84);
+    letter-spacing: .64px;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+#result-num {
+    text-align: center;
+    color: #fff;
+}

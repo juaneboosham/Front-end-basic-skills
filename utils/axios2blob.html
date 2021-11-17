@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+//         axios({
+//             method:'GET',
+//             url:'https://s3plus.meituan.net/v1/mss_e602b0ee72a245fd9997b7276211d882/slt-i/%E5%BF%AB%E6%89%8B%E5%B7%A5%E4%BD%9C%E9%A4%90%E8%AE%A2%E9%A4%90%E5%B9%B3%E5%8F%B0%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.pdf',
+//             // url:'https://s3plus.sankuai.com/finerp-contract-test/8fcef647851b4080b36ae56df4143859?AWSAccessKeyId=65fdfb1a8c3d49fdbd3d9f735aeeb23e&Expires=1634995845&Signature=nUJQZTzZjBho7L23n6IZ42YNKE0%3D',
+//             responseType:'blob'
+//             })
+//             .then(res=>{
+//             let blob= new Blob([res.data], { type: 'application/pdf'});
+//             let blobUrl = URL.createObjectURL(blob);
+//             console.log(blobUrl);
+//             var iframe = document.createElement('iframe');
+//             iframe.src=blobUrl;  
+//             document.body.appendChild(iframe);
+//             var a = document.createElement('a');
+//             a.href = blobUrl;
+//             a.download = "kuaishou.pdf";
+//             document.body.appendChild(a)
+//             a.innerHTML = 'sdsd'
+//             a.click()
+//             // document.body.removeChild(a)
+//             })
+//             .catch(err =>{
+//             console.log(err);
+//             })
+        
+const download = (res, type, filename) => {
+  // 创建blob对象，解析流数据
+  console.log(res,type)
+  const blob = new Blob([res.data], {
+    // 如何后端没返回下载文件类型，则需要手动设置：type: 'application/pdf;chartset=UTF-8' 表示下载文档为pdf，如果是word则设置为msword，excel为excel
+    type
+  })
+  console.log(blob)
+  const a = document.createElement('a')
+  // 兼容webkix浏览器，处理webkit浏览器中href自动添加blob前缀，默认在浏览器打开而不是下载
+  const URL = window.URL || window.webkitURL
+  // 根据解析后的blob对象创建URL 对象
+  const href = URL.createObjectURL(blob)
+  console.log(href)
+  // 下载链接
+  a.href = href
+  // 下载文件名,如果后端没有返回，可以自己写a.download = '文件.pdf'
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  // 在内存中移除URL 对象
+  window.URL.revokeObjectURL(href)
+}
+
+
+const downloadFile = async function (url) {
+    let res = await axios({
+        url,
+        method: 'GET',
+        // 设置返回数据类型，这里一定要设置，否则下载下来的pdf会是空白,也可以是`arraybuffer`
+        responseType: 'blob',
+        params: {
+        }
+    })
+      console.log(res.headers)
+      // 获取在response headers中返回的下载文件类型
+      let type = res.headers['content-type']
+      console.log(type)
+      /*获取在response headers中返回的下载文件名
+        因为返回文件名是通过encodeURIComponent()函数进行了编码，因此需要通过decodeURIComponent()函数解码
+      */
+      let fileName = 'file'
+      console.log(fileName)
+      // 调用封装好的下载函数
+      console.log(res)
+      download(res, type, fileName)
+    }
+
+    downloadFile('http://127.0.0.1:3000')
+    </script>
+</body>
+</html>
