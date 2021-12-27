@@ -30,11 +30,26 @@
 </style>
 <body>
     <div class="inoneline">世界很小
-我陪你去到天涯海角在没有烦恼的角落里停止寻找在无忧无虑的时光里慢慢变老</div>
+        我陪你去到天涯海角在没有烦恼的角落里停止寻找在无忧无虑的时光里慢慢变老</div>
     <div class="intwoline">一次就好我带你去看天荒地老在阳光灿烂的日子里开怀大笑在自由自在的空气里吵吵闹闹你可知道我会你的想要世界很小我陪你去到天涯海角在没有烦恼的角落里停止寻找在无忧无虑的时光里慢慢变老你可知道我全部的心跳随你跳一次就好我带你去看天荒地老在阳光灿烂的日子里开怀大笑在自由自在的空气里吵吵闹闹你可知道我会你的想要</div>
     <script>
         import {getCookie} from './utils.js'
         console.log(getCookie())
+    </script>
+    <script>
+        console.log('sw11.html');
+        console.log('serviceWorker' in navigator);
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('./sw.js').then(function (registration) {
+            // Registration was successful
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+            // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
     </script>
 </body>
 <a href="http://www.baidu.com" target="topFrame">标签</a>

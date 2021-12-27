@@ -27,5 +27,14 @@ app.get('/', function (req, res) {
     res.send(obj)
 });
 
+app.get('/workertest', function (req, res) {
+  res.set({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    })
+  console.log('Access-Control-Allow-Origin')
+  res.send(obj)
+});
+
 app.listen(3000)
 console.log(pdfBuffer)
