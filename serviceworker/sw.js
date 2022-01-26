@@ -1,4 +1,4 @@
-var CACHE_NAME = 'v2';
+var CACHE_NAME = 'v4';
 var urlsToCache = [
     './',
     './index.html',
@@ -17,14 +17,15 @@ self.addEventListener('install', function (event) {
       })
   );
   self.skipWaiting();
-console.log('install了v3')
+console.log('install了v4')
 });
 
 
 self.addEventListener('activate',function(event){
-  var cacheWhiteList = ['v2'];
+  // 设置缓存白名单
+  var cacheWhiteList = ['v4'];
   event.waitUntil(
-    // 清除所有旧缓存
+    // 清除白名单外的所有旧缓存
     caches.keys().then(function(keyList){
       return Promise.all(keyList.map(function(key){
         if(cacheWhiteList.indexOf(key) === -1){
@@ -62,52 +63,52 @@ var picUrl = 'https://s3plus.meituan.net/v1/mss_e602b0ee72a245fd9997b7276211d882
 
 
 // 缓存优先的策略
-this.addEventListener('fetch', function(event) {
-    console.log('fetch事件v3')
-    event.respondWith(
-    caches.match(event.request)
-    .then(function(response){
-      // caches.match() always resolves
-      // but in case of success response will have value
-      // match成功时response有值
-      if(response !== undefined){
-        // 如果匹配到，直接返回
-        return response
-      } else {
-        return fetch(event.request).then(function(response){
-          // response may be used only once
-          // we need to save clone to put one copy in cache
-          // and serve second one
-          console.log('执行了then')
-          let responseClone = response.clone();
-          caches.open(CACHE_NAME).then(function(cache){
-            cache.put(event.request,responseClone)
-          });
-          return response;
-        }).catch(function(){
-          console.log('执行了catch')
-          return caches.match('./default')
-        })
-      }
-    }))
-  });
-
-
-// // 网络优先的策略
-//   this.addEventListener('fetch', function(event) {
-//     console.log('fetch事件')
+// this.addEventListener('fetch', function(event) {
+//     console.log('fetch事件v1')
 //     event.respondWith(
 //     caches.match(event.request)
-//     .then(function(cacheRes){
+//     .then(function(response){
+//       // caches.match() always resolves
+//       // but in case of success response will have value
+//       // match成功时response有值
+//       if(response !== undefined){
+//         // 如果匹配到，直接返回
+//         return response
+//       } else {
 //         return fetch(event.request).then(function(response){
+//           // response may be used only once
+//           // we need to save clone to put one copy in cache
+//           // and serve second one
+//           console.log('执行了then')
 //           let responseClone = response.clone();
 //           caches.open(CACHE_NAME).then(function(cache){
 //             cache.put(event.request,responseClone)
 //           });
 //           return response;
 //         }).catch(function(){
-//           return cacheRes
+//           console.log('执行了catch')
+//           return new Response('请求失败了')
 //         })
+//       }
 //     }))
-//   }
-// )
+//   });
+
+
+// 网络优先的策略
+  this.addEventListener('fetch', function(event) {
+    console.log('fetch事件v4')
+    event.respondWith(
+    caches.match(event.request)
+    .then(function(cacheRes){
+        return fetch(event.request).then(function(response){
+          let responseClone = response.clone();
+          caches.open(CACHE_NAME).then(function(cache){
+            cache.put(event.request,responseClone)
+          });
+          return response;
+        }).catch(function(){
+          return cacheRes
+        })
+    }))
+  }
+)
