@@ -50,7 +50,8 @@ git status
 
 git add hello.txt,将hello.txt添加到暂存区
 
-暂存区的文件可以删除，使用git rm --cached hello.txt,将文件移除暂存区。此时文件仍在工作区。
+暂存区的文件可以删除，使用git rm --cached hello.txt？？
+git add的反操作（git reset HEAD -- filename）将文件移除暂存区。此时文件仍在工作区。
 
 
 
